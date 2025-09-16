@@ -134,39 +134,7 @@ with saas_tab:
             st.dataframe(edited_df)
     else:
         st.warning("Please calculate a valid LTV in the section above to enable the trend analysis.")
-        
-    # --- NEW: TREND ANALYSIS SECTION ---
-    st.divider()
-    st.subheader("📈 LTV:CAC Trend Analysis")
-    st.markdown("Analyze how your acquisition efficiency has changed over time. Your calculated LTV above will be used to calculate the ratio for each period.")
-    
-    if saas_ltv > 0:
-        # Create an editable dataframe for user input
-        trend_data = {
-            'Period': ['January', 'February', 'March', 'April', 'May', 'June'],
-            'Total Sales & Marketing Spend ($)': [9000, 9500, 10000, 11000, 10500, 11500],
-            'New Customers Acquired': [18, 19, 20, 21, 22, 21]
-        }
-        trend_df = pd.DataFrame(trend_data)
-        
-        st.write("**Enter your historical data for each period below:**")
-        edited_df = st.data_editor(trend_df, num_rows="dynamic")
 
-        # Perform calculations on the edited dataframe
-        edited_df['CAC ($)'] = edited_df['Total Sales & Marketing Spend ($)'] / edited_df['New Customers Acquired']
-        edited_df['LTV:CAC Ratio'] = saas_ltv / edited_df['CAC ($)']
-        
-        st.write("**Trend Results:**")
-        
-        # Display the line chart
-        st.line_chart(edited_df.set_index('Period')['LTV:CAC Ratio'])
-        
-        # Display the data table as well
-        with st.expander("Show Trend Data Table"):
-            st.dataframe(edited_df)
-    else:
-        st.warning("Please calculate a valid LTV in the section above to enable the trend analysis.")
-        
 # --- Professional Services Model Tab ---
 # (Code for this tab remains unchanged for now)
 with services_tab:
