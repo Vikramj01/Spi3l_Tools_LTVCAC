@@ -25,9 +25,9 @@ with title_col:
     # --- IMPORTANT ---
     # Replace the URLs with your actual website and social media links.
     st.markdown("""
-    **Brought to you by [Your Company Name](https://yourwebsite.com)** | 
-    [Read the Full Article](https://yourwebsite.com/blog) | 
-    [Find us on LinkedIn](https://www.linkedin.com/company/your-company)
+    **Brought to you by [Spi3L LLC](https://spi3l.com)** | 
+    [Read the Full Article](https://spi3l.substack.com/) | 
+    [Find us on LinkedIn](https://www.linkedin.com/company/spi3l/)
     """)
 
 st.markdown("""
@@ -280,4 +280,5 @@ with one_off_tab:
         with st.expander("Show Trend Data Table"):
             st.dataframe(edited_df_one_off)
     else:
+
         st.warning("Please calculate a valid LTV in the section above to enable the trend analysis.")
