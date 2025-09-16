@@ -85,7 +85,8 @@ with saas_tab:
         res_col1, res_col2, res_col3 = st.columns(3)
         res_col1.metric("Lifetime Value (LTV)", f"${saas_ltv:,.2f}")
         res_col2.metric("Customer Acquisition Cost (CAC)", f"${saas_cac:,.2f}")
-        res_col3.metric("LTV:CAC Ratio", f"{saas_ratio:,.2f} : 1")
+        # --- CHANGE 1 (Output Metric): Renamed the metric label ---
+        res_col3.metric("LTV to CAC Ratio", f"{saas_ratio:,.2f} : 1")
         
         if saas_ratio >= 3:
             st.success("✅ **Healthy.** Your business model appears sustainable and profitable. Great job!", icon="🎉")
@@ -101,6 +102,39 @@ with saas_tab:
     else:
         st.warning("Please enter a non-zero value for New Customers Acquired to calculate the snapshot results.")
 
+    # --- NEW: TREND ANALYSIS SECTION ---
+    st.divider()
+    st.subheader("📈 LTV:CAC Trend Analysis")
+    st.markdown("Analyze how your acquisition efficiency has changed over time. Your calculated LTV above will be used to calculate the ratio for each period.")
+    
+    if saas_ltv > 0:
+        # Create an editable dataframe for user input
+        trend_data = {
+            'Period': ['January', 'February', 'March', 'April', 'May', 'June'],
+            'Total Sales & Marketing Spend ($)': [9000, 9500, 10000, 11000, 10500, 11500],
+            'New Customers Acquired': [18, 19, 20, 21, 22, 21]
+        }
+        trend_df = pd.DataFrame(trend_data)
+        
+        st.write("**Enter your historical data for each period below:**")
+        edited_df = st.data_editor(trend_df, num_rows="dynamic")
+
+        # Perform calculations on the edited dataframe
+        edited_df['CAC ($)'] = edited_df['Total Sales & Marketing Spend ($)'] / edited_df['New Customers Acquired']
+        # --- CHANGE 2 (Calculation): Renamed the new column ---
+        edited_df['LTV to CAC Ratio'] = saas_ltv / edited_df['CAC ($)']
+        
+        st.write("**Trend Results:**")
+        
+        # Display the line chart using the new, safe column name
+        st.line_chart(edited_df.set_index('Period')['LTV to CAC Ratio'])
+        
+        # Display the data table as well
+        with st.expander("Show Trend Data Table"):
+            st.dataframe(edited_df)
+    else:
+        st.warning("Please calculate a valid LTV in the section above to enable the trend analysis.")
+        
     # --- NEW: TREND ANALYSIS SECTION ---
     st.divider()
     st.subheader("📈 LTV:CAC Trend Analysis")
